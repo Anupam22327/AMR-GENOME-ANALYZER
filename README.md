@@ -178,4 +178,5 @@ For a future production-grade deployment, the following extensions can be integr
 Created for bioinformatics education and academic demonstration. Open for academic adaptation, student coursework, and scientific teaching workshops.
 #   A M R - G E N O M E - A N A L Y Z E R  
  #   A M R - G E N O M E - A N A L Y Z E R  
+ #   A M R - G E N O M E - A N A L Y Z E R  
  
