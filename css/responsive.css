@@ -1,0 +1,162 @@
+/* ==========================================================================
+   AMR-GENOME ANALYZER - Responsive Breakpoints Stylesheet
+   ========================================================================== */
+
+/* Large Tablets & Small Laptops (<= 1200px) */
+@media screen and (max-width: 1200px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-grid-2x2 {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablets (<= 992px) */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+  }
+
+  .mobile-toggle-btn {
+    display: inline-flex;
+  }
+
+  .hero-title {
+    font-size: 2.6rem;
+  }
+
+  .hero-section {
+    padding: 60px 24px 40px;
+  }
+
+  .features-section, .workflow-section {
+    padding: 40px 24px;
+  }
+
+  .landing-navbar {
+    padding: 16px 24px;
+  }
+
+  .topbar {
+    padding: 0 20px;
+  }
+
+  .content-body {
+    padding: 24px 20px;
+  }
+
+  .cascade-steps {
+    flex-direction: column;
+  }
+
+  .cascade-arrow {
+    transform: rotate(90deg);
+    padding: 6px 0;
+  }
+}
+
+/* Mobile Devices (<= 768px) */
+@media screen and (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: 2.1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-cta-group .btn {
+    width: 100%;
+  }
+
+  .pipeline-diagram {
+    padding: 20px 16px;
+  }
+
+  .pipeline-connector {
+    display: none;
+  }
+
+  .content-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .locus-info-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .exact-mut-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .viewer-3d-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .viewer-3d-box {
+    height: 280px;
+  }
+
+  .landing-nav-links {
+    display: none;
+  }
+
+  .data-table th, .data-table td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Very Small Screens (<= 480px) */
+@media screen and (max-width: 480px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .topbar-right .btn-text-hide {
+    display: none;
+  }
+
+  .kpi-value {
+    font-size: 1.5rem;
+  }
+
+  .modal-card {
+    padding: 20px 16px;
+  }
+}

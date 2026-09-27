@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMR-GENOME ANALYZER | Antimicrobial Resistance & Mutation Analysis Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Landing Top Navigation -->
+  <header class="landing-navbar">
+    <div class="brand-wrapper">
+      <div class="brand-logo-icon">🧬</div>
+      <div class="brand-titles">
+        <h1>AMR-GENOME ANALYZER</h1>
+        <div class="brand-subtitle">Bioinformatics &bull; Genomics &bull; AMR Analysis</div>
+      </div>
+    </div>
+    <nav class="landing-nav-links">
+      <a href="#features">Features</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#about">Academic Scope</a>
+      <a href="dashboard.html" class="btn btn-sm btn-secondary">Dashboard</a>
+      <a href="analysis.html" class="btn btn-sm btn-primary">Start Analysis</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero-section">
+      <div class="hero-pill-badge">
+        <span>🔬 Academic Bioinformatics Platform</span>
+        <span>&bull;</span>
+        <span>Version 1.0 Client-Side</span>
+      </div>
+
+      <h1 class="hero-title">AMR-GENOME ANALYZER</h1>
+      <h2 class="hero-subtitle">Antimicrobial Resistance &amp; Mutation Analysis Platform</h2>
+      <p class="hero-desc">
+        Analyze antimicrobial resistance genes, mutations, and genomic signatures.
+        Designed for bioinformatics and biotechnology students to visually explore resistome dynamics, single nucleotide variants, and resistance mechanisms.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="analysis.html" class="btn btn-lg btn-primary">
+          <span>🚀 START ANALYSIS</span>
+        </a>
+        <button class="btn btn-lg btn-secondary btn-load-demo" id="btn-hero-load-demo">
+          <span>⚡ LOAD DEMO DATA</span>
+        </button>
+      </div>
+
+      <!-- Quick Metrics Ribbon -->
+      <div class="kpi-grid" style="margin-top: 36px;">
+        <div class="kpi-card">
+          <div class="kpi-content">
+            <span class="kpi-label">Target Organisms</span>
+            <span class="kpi-value text-cyan">ESKAPE</span>
+            <span class="kpi-trend">Priority Pathogens</span>
+          </div>
+          <div class="kpi-icon-wrapper">🦠</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-content">
+            <span class="kpi-label">Detection Paradigm</span>
+            <span class="kpi-value text-blue">Genes &amp; Muts</span>
+            <span class="kpi-trend">ORFs + QRDR Loci</span>
+          </div>
+          <div class="kpi-icon-wrapper">🧬</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-content">
+            <span class="kpi-label">Mechanisms Covered</span>
+            <span class="kpi-value text-amber">5 Major</span>
+            <span class="kpi-trend">Efflux, Inactivation, Target</span>
+          </div>
+          <div class="kpi-icon-wrapper">🛡️</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-content">
+            <span class="kpi-label">Architecture</span>
+            <span class="kpi-value text-emerald">100% Client</span>
+            <span class="kpi-trend">Zero Cloud Latency</span>
+          </div>
+          <div class="kpi-icon-wrapper">⚡</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow Pipeline Section -->
+    <section class="workflow-section" id="workflow">
+      <div class="section-header">
+        <h2>Interactive Bioinformatics Workflow</h2>
+        <p>A step-by-step pipeline from raw genomic DNA sequence to interpreted phenotypic susceptibility</p>
+      </div>
+
+      <div class="pipeline-diagram">
+        <!-- Node 1 -->
+        <div class="pipeline-node">
+          <div class="pipeline-icon-circle">📂</div>
+          <div class="pipeline-label">DNA Sequence</div>
+          <div class="pipeline-sub">FASTA Input</div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <!-- Node 2 -->
+        <div class="pipeline-node">
+          <div class="pipeline-icon-circle">📊</div>
+          <div class="pipeline-label">Basic Statistics</div>
+          <div class="pipeline-sub">GC% &amp; QC Check</div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <!-- Node 3 -->
+        <div class="pipeline-node">
+          <div class="pipeline-icon-circle">🔍</div>
+          <div class="pipeline-label">Gene Detection</div>
+          <div class="pipeline-sub">Coordinates Scan</div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <!-- Node 4 -->
+        <div class="pipeline-node">
+          <div class="pipeline-icon-circle">🛡️</div>
+          <div class="pipeline-label">AMR Identification</div>
+          <div class="pipeline-sub">Resistome Classes</div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <!-- Node 5 -->
+        <div class="pipeline-node">
+          <div class="pipeline-icon-circle">🎯</div>
+          <div class="pipeline-label">Mutation Detection</div>
+          <div class="pipeline-sub">Codon &amp; AA Impact</div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <!-- Node 6 -->
+        <div class="pipeline-node">
+          <div class="pipeline-icon-circle">🌐</div>
+          <div class="pipeline-label">Visualization</div>
+          <div class="pipeline-sub">Locus &amp; 3D Model</div>
+        </div>
+        <div class="pipeline-connector"></div>
+
+        <!-- Node 7 -->
+        <div class="pipeline-node">
+          <div class="pipeline-icon-circle">📑</div>
+          <div class="pipeline-label">Final Report</div>
+          <div class="pipeline-sub">PDF / Print Export</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Three Main Feature Cards -->
+    <section class="features-section" id="features">
+      <div class="section-header">
+        <h2>Core Bioinformatics Capabilities</h2>
+        <p>Built specifically for biotechnology education and genomic resistance analysis</p>
+      </div>
+
+      <div class="cards-grid-3">
+        <!-- Feature 1 -->
+        <div class="glass-card">
+          <div class="card-icon-bubble">🛡️</div>
+          <h3>1. AMR Gene Detection</h3>
+          <p>
+            Identifies clinically relevant antimicrobial resistance determinants including beta-lactamases (<em>blaCTX-M</em>, <em>blaTEM</em>), methicillin resistance (<em>mecA</em>), tetracycline pumps (<em>tetA</em>), and vancomycin resistance operon (<em>vanA</em>) with exact genomic bounds, identity scores, and mechanisms.
+          </p>
+          <div style="margin-top: 18px;">
+            <a href="analysis.html" class="btn btn-sm btn-outline-cyan">Explore Genes &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="glass-card">
+          <div class="card-icon-bubble">⚡</div>
+          <h3>2. Mutation Analysis</h3>
+          <p>
+            Deep-dives into single nucleotide polymorphisms (SNPs), missense mutations, nonsense truncations, and frameshift indels. Translates nucleotide changes into codon and amino acid substitutions (e.g. GyrA Ser83Leu, PBP2a Val274Ile) with verified clinical evidence tiers.
+          </p>
+          <div style="margin-top: 18px;">
+            <a href="analysis.html#mutation-section" class="btn btn-sm btn-outline-cyan">Analyze Mutations &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="glass-card">
+          <div class="card-icon-bubble">🧬</div>
+          <h3>3. Genome Visualization</h3>
+          <p>
+            Dynamically plots genomic coordinates across contig tracks with exact mutation pointer needles, locus zoom windows, and interactive 3D molecular protein structure visualization powered by 3Dmol.js to observe catalytic pocket alterations in real-time.
+          </p>
+          <div style="margin-top: 18px;">
+            <a href="analysis.html#visualization-section" class="btn btn-sm btn-outline-cyan">View Visualizations &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prominent Disclaimer Banner -->
+    <section style="padding: 0 48px;">
+      <div class="disclaimer-banner" id="about">
+        <div class="disclaimer-icon">⚠️</div>
+        <div class="disclaimer-content">
+          <h4>IMPORTANT BIOINFORMATICS &amp; ACADEMIC DISCLAIMER</h4>
+          <p>
+            This application is an educational bioinformatics demonstration. Results generated using demonstration or reference data must <strong>NOT</strong> be interpreted as clinical diagnosis, treatment guidance, or validated antimicrobial susceptibility testing (AST).
+          </p>
+          <p style="margin-top: 6px;">
+            Validated AMR analysis in production environments requires curated reference databases (such as CARD, NCBI AMRFinderPlus, ResFinder) and validated alignment pipelines (BLAST+, Diamond, or HMMER).
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div style="margin-bottom: 8px;">
+      <strong>AMR-GENOME ANALYZER</strong> &bull; Antimicrobial Resistance &amp; Mutation Analysis Platform
+    </div>
+    <div class="text-subtle">
+      Client-Side Bioinformatics Project &bull; HTML5, CSS3, Vanilla JavaScript, Chart.js &amp; 3Dmol.js &bull; Academic Demonstration
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/sampleData.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

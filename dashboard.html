@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | AMR-GENOME ANALYZER</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="amr-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">🧬</div>
+        <div class="sidebar-title">
+          <h2>AMR-GENOME</h2>
+          <p>Genomics &amp; AMR Platform</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main Console</div>
+        <a href="dashboard.html" class="nav-link active">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="analysis.html" class="nav-link">
+          <span class="nav-icon">🔬</span>
+          <span>Genome Analysis</span>
+        </a>
+        <a href="analysis.html#amr-genes-section" class="nav-link">
+          <span class="nav-icon">🛡️</span>
+          <span>AMR Genes</span>
+        </a>
+        <a href="analysis.html#mutation-section" class="nav-link">
+          <span class="nav-icon">⚡</span>
+          <span>Mutations</span>
+        </a>
+        <a href="analysis.html#visualization-section" class="nav-link">
+          <span class="nav-icon">🌐</span>
+          <span>Genome Visualization</span>
+        </a>
+
+        <div class="nav-category">Outputs &amp; Academic</div>
+        <a href="results.html" class="nav-link">
+          <span class="nav-icon">📑</span>
+          <span>Reports</span>
+        </a>
+        <a href="index.html#about" class="nav-link">
+          <span class="nav-icon">ℹ️</span>
+          <span>About &amp; Disclaimer</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status-box" id="dashboard-status-indicator">
+          <span class="status-pulse-dot"></span>
+          <span>● Analysis Ready</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle-btn" id="sidebar-toggle-btn" aria-label="Toggle Navigation">☰</button>
+          <div class="topbar-title">
+            <h1>AMR-GENOME ANALYZER</h1>
+            <span>Antimicrobial Resistance &amp; Mutation Analysis Platform</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-sm btn-secondary btn-load-demo" id="btn-topbar-load-demo">
+            <span>⚡ Load Demo Data</span>
+          </button>
+          <a href="analysis.html" class="btn btn-sm btn-primary">
+            <span>+ New Sequence</span>
+          </a>
+          <a href="results.html" class="btn btn-sm btn-outline-cyan">
+            <span>📑 View Full Report</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Body -->
+      <main class="content-body">
+        <!-- Content Title -->
+        <div class="content-header">
+          <div class="content-header-title">
+            <h2>Resistome Surveillance Dashboard</h2>
+            <p>Real-time genomic metrics, resistance class distribution, and single nucleotide variants.</p>
+          </div>
+          <div>
+            <span class="badge badge-cyan font-mono" id="active-sample-badge">Dataset: AMR_REF_DEMO_01</span>
+          </div>
+        </div>
+
+        <!-- 4 Core KPI Stat Cards -->
+        <section class="kpi-grid">
+          <!-- Total Genes -->
+          <div class="kpi-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Total Genes (Predicted)</span>
+              <span class="kpi-value text-white font-mono" id="kpi-total-genes">--</span>
+              <span class="kpi-trend">Genome span: <span id="kpi-genome-len">--</span></span>
+            </div>
+            <div class="kpi-icon-wrapper">🧬</div>
+          </div>
+
+          <!-- AMR Genes Detected -->
+          <div class="kpi-card">
+            <div class="kpi-content">
+              <span class="kpi-label">AMR Genes Detected</span>
+              <span class="kpi-value text-cyan font-mono" id="kpi-amr-genes">--</span>
+              <span class="kpi-trend text-cyan">100% Sequence Coverage</span>
+            </div>
+            <div class="kpi-icon-wrapper">🛡️</div>
+          </div>
+
+          <!-- Mutations Detected -->
+          <div class="kpi-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Mutations Detected</span>
+              <span class="kpi-value text-red font-mono" id="kpi-mutations">--</span>
+              <span class="kpi-trend text-amber"><span id="kpi-known-muts">--</span> Resistance-Associated</span>
+            </div>
+            <div class="kpi-icon-wrapper">⚡</div>
+          </div>
+
+          <!-- Resistance Classes -->
+          <div class="kpi-card">
+            <div class="kpi-content">
+              <span class="kpi-label">Resistance Classes</span>
+              <span class="kpi-value text-emerald font-mono" id="kpi-resistance-classes">--</span>
+              <span class="kpi-trend">GC Content: <span id="kpi-gc-content">--</span></span>
+            </div>
+            <div class="kpi-icon-wrapper">💊</div>
+          </div>
+        </section>
+
+        <!-- Interactive Genome Overview Map -->
+        <section class="genome-map-wrapper">
+          <div class="map-header">
+            <div>
+              <h3 style="font-size: 1.1rem; color: #ffffff; font-weight: 700;">Contig Genomic Architecture Map</h3>
+              <p class="text-sm text-muted">Click any AMR gene glyph or mutation pin to inspect in the visualizer.</p>
+            </div>
+            <div class="map-legend">
+              <div class="legend-item"><span class="legend-swatch" style="background:#06b6d4;"></span> Beta-lactams</div>
+              <div class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span> Quinolones</div>
+              <div class="legend-item"><span class="legend-swatch" style="background:#ec4899;"></span> Glycopeptides</div>
+              <div class="legend-item"><span class="legend-swatch" style="background:#10b981;"></span> Tetracyclines</div>
+              <div class="legend-item"><span class="legend-swatch" style="background:#ef4444;"></span> Mutation Pin</div>
+            </div>
+          </div>
+
+          <div id="dashboard-genome-map-container" style="overflow-x: auto; padding: 10px 0;">
+            <!-- Rendered by AMRVisualizer.renderGenomeMap -->
+          </div>
+        </section>
+
+        <!-- 4 Chart.js Charts Grid -->
+        <section class="charts-grid-2x2">
+          <!-- Chart 1: Resistance Class Distribution -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3>Resistance Class Distribution</h3>
+              <span class="badge badge-secondary">Antibiotic Families</span>
+            </div>
+            <div class="chart-container-fixed">
+              <canvas id="chart-resistance-classes"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: AMR Mechanisms -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3>AMR Biological Mechanisms</h3>
+              <span class="badge badge-secondary">Functional Modes</span>
+            </div>
+            <div class="chart-container-fixed">
+              <canvas id="chart-amr-mechanisms"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 3: Mutation Types -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3>Mutation Type Distribution</h3>
+              <span class="badge badge-secondary">Variant Classes</span>
+            </div>
+            <div class="chart-container-fixed">
+              <canvas id="chart-mutation-types"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 4: Genome GC / AT Ratio -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3>Genome Nucleotide Composition</h3>
+              <span class="badge badge-secondary">GC% vs AT%</span>
+            </div>
+            <div class="chart-container-fixed">
+              <canvas id="chart-gc-overview"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- Critical Findings / Active AMR Genes List -->
+        <section class="alerts-list-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 700;">Critical Antimicrobial Resistance Determinants</h3>
+              <p class="text-sm text-muted">High-priority beta-lactamases and target modifications detected in active sample.</p>
+            </div>
+            <a href="analysis.html" class="btn btn-sm btn-outline-cyan">View All Genes in Analysis &rarr;</a>
+          </div>
+
+          <div id="dashboard-critical-alerts">
+            <!-- Dynamic alerts generated by AMRDashboard.renderCriticalAlerts -->
+          </div>
+        </section>
+
+        <!-- Prominent Academic Disclaimer -->
+        <div class="disclaimer-banner">
+          <div class="disclaimer-icon">⚠️</div>
+          <div class="disclaimer-content">
+            <h4>ACADEMIC &amp; DEMONSTRATION NOTICE</h4>
+            <p>
+              This application is an educational bioinformatics demonstration. Results generated using demonstration/reference data must not be interpreted as clinical diagnosis, treatment guidance, or validated antimicrobial susceptibility testing.
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/sampleData.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/visualization.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

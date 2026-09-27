@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genome & Mutation Analysis | AMR-GENOME ANALYZER</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- 3Dmol.js for browser molecular visualization -->
+  <script src="https://3dmol.org/build/3Dmol-min.js"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="amr-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">🧬</div>
+        <div class="sidebar-title">
+          <h2>AMR-GENOME</h2>
+          <p>Genomics &amp; AMR Platform</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main Console</div>
+        <a href="dashboard.html" class="nav-link">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="analysis.html" class="nav-link active">
+          <span class="nav-icon">🔬</span>
+          <span>Genome Analysis</span>
+        </a>
+        <a href="#amr-genes-section" class="nav-link">
+          <span class="nav-icon">🛡️</span>
+          <span>AMR Genes</span>
+        </a>
+        <a href="#mutation-section" class="nav-link">
+          <span class="nav-icon">⚡</span>
+          <span>Mutations</span>
+        </a>
+        <a href="#visualization-section" class="nav-link">
+          <span class="nav-icon">🌐</span>
+          <span>Genome Visualization</span>
+        </a>
+
+        <div class="nav-category">Outputs &amp; Academic</div>
+        <a href="results.html" class="nav-link">
+          <span class="nav-icon">📑</span>
+          <span>Reports</span>
+        </a>
+        <a href="index.html#about" class="nav-link">
+          <span class="nav-icon">ℹ️</span>
+          <span>About &amp; Disclaimer</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status-box">
+          <span class="status-pulse-dot"></span>
+          <span>● Analysis Ready</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle-btn" id="sidebar-toggle-btn" aria-label="Toggle Navigation">☰</button>
+          <div class="topbar-title">
+            <h1>Genome &amp; Mutation Analysis Console</h1>
+            <span>Sequence processing, resistome identification &amp; structural mapping</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-sm btn-secondary btn-load-demo" id="btn-topbar-load-demo">
+            <span>⚡ Load Demo Data</span>
+          </button>
+          <a href="results.html" class="btn btn-sm btn-primary">
+            <span>📑 Final Report &rarr;</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Body -->
+      <main class="content-body">
+
+        <!-- 1. FASTA Sequence Input Section -->
+        <section class="glass-card" style="margin-bottom: 28px;">
+          <div class="content-header" style="margin-bottom: 16px;">
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">1. Genomic Sequence Input (FASTA)</h3>
+              <p class="text-sm text-muted">Upload a FASTA file or paste raw nucleotide sequences containing A, T, G, C, N.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-sm btn-secondary" id="btn-load-demo-seq">Load Demo FASTA</button>
+              <button class="btn btn-sm btn-secondary" id="btn-clear-seq">Clear</button>
+            </div>
+          </div>
+
+          <!-- Drag and drop zone -->
+          <div id="fasta-drop-zone" class="glass-card" style="padding: 16px; border: 2px dashed #334155; text-align: center; margin-bottom: 16px; background: rgba(15,23,42,0.4); cursor: pointer;" onclick="document.getElementById('fasta-file-input').click();">
+            <span style="font-size: 1.6rem;">📁</span>
+            <p style="margin: 4px 0; font-weight: 600; color: #e2e8f0;">Drag &amp; drop FASTA file here or click to browse</p>
+            <p class="text-xs text-muted">Accepts .fasta, .fa, .fna, .txt (up to ~5 Mbp recommended for browser processing)</p>
+            <input type="file" id="fasta-file-input" accept=".fasta,.fa,.fna,.txt" style="display: none;">
+          </div>
+
+          <!-- Textarea for paste -->
+          <div style="position: relative; margin-bottom: 16px;">
+            <textarea id="fasta-textarea" class="font-mono" style="width: 100%; height: 140px; background: #070d18; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px; color: #38bdf8; font-size: 0.82rem; resize: vertical;" placeholder=">Sample_ID | Description&#10;AGCTGACCAGTCAGCTGATCGATCGATCAGGCTAGCTAGCATCGATCGATCGATC..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="text-xs text-muted">
+              Supported DNA characters: <strong>A, T, G, C, N</strong> (whitespace and headers automatically handled).
+            </span>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-secondary" id="btn-load-pasted-seq">Load Sequence</button>
+              <button class="btn btn-primary" id="btn-analyze-genome">
+                <span>⚡ ANALYZE GENOME</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Basic Genome Statistics & Quality Indicator -->
+        <section class="glass-card" style="margin-bottom: 28px;">
+          <div class="content-header" style="margin-bottom: 16px;">
+            <div>
+              <h3 style="font-size: 1.2rem; font-weight: 700; color: #ffffff;">2. Sequence Composition &amp; Basic Statistics</h3>
+              <p class="text-sm text-muted">Nucleotide metrics, base distribution, and sequence quality assessment.</p>
+            </div>
+            <div>
+              <span class="badge badge-success" id="stat-quality-badge">Excellent (98/100)</span>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items: center;">
+            <!-- Stats Grid -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
+              <div class="kpi-card" style="padding: 14px;">
+                <div class="kpi-content">
+                  <span class="kpi-label">Genome Length</span>
+                  <span class="kpi-value font-mono text-cyan" id="stat-genome-len" style="font-size: 1.3rem;">20,000 bp</span>
+                  <span class="kpi-trend font-mono" id="stat-seq-id">AMR_REF_DEMO_01</span>
+                </div>
+              </div>
+              <div class="kpi-card" style="padding: 14px;">
+                <div class="kpi-content">
+                  <span class="kpi-label">GC Content</span>
+                  <span class="kpi-value font-mono text-cyan" id="stat-gc-pct" style="font-size: 1.3rem;">52.00%</span>
+                  <span class="kpi-trend font-mono">AT: <span id="stat-at-pct">48.00%</span></span>
+                </div>
+              </div>
+              <div class="kpi-card" style="padding: 14px;">
+                <div class="kpi-content">
+                  <span class="kpi-label">Ambiguous (N) Bases</span>
+                  <span class="kpi-value font-mono text-white" id="stat-n-count" style="font-size: 1.3rem;">0</span>
+                  <span class="kpi-trend">0.00% ambiguous</span>
+                </div>
+              </div>
+              <div class="kpi-card" style="padding: 14px;">
+                <div class="kpi-content">
+                  <span class="kpi-label">Adenine (A)</span>
+                  <span class="kpi-value font-mono text-emerald" id="stat-a-count" style="font-size: 1.2rem;">4,800</span>
+                </div>
+              </div>
+              <div class="kpi-card" style="padding: 14px;">
+                <div class="kpi-content">
+                  <span class="kpi-label">Thymine (T)</span>
+                  <span class="kpi-value font-mono text-amber" id="stat-t-count" style="font-size: 1.2rem;">4,800</span>
+                </div>
+              </div>
+              <div class="kpi-card" style="padding: 14px;">
+                <div class="kpi-content">
+                  <span class="kpi-label">Guanine / Cytosine</span>
+                  <span class="kpi-value font-mono text-blue" style="font-size: 1.2rem;">
+                    <span id="stat-g-count">5,200</span> / <span id="stat-c-count">5,200</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- GC Doughnut Chart -->
+            <div style="height: 180px; position: relative;">
+              <canvas id="gc-composition-chart"></canvas>
+            </div>
+          </div>
+
+          <div style="margin-top: 14px; padding: 10px 14px; background: rgba(30, 41, 59, 0.4); border-radius: var(--radius-sm); font-size: 0.76rem; color: var(--text-subtle);">
+            <strong>Notice:</strong> This is a basic in-browser nucleotide sequence summary for educational purposes and is <em>not</em> an alternative to professional raw-read quality control pipelines such as FastQC, Fastp, or Illumina adapter trimming.
+          </div>
+        </section>
+
+        <!-- 3. Genome Architecture Map -->
+        <section class="genome-map-wrapper">
+          <div class="map-header">
+            <div>
+              <h3 style="font-size: 1.15rem; color: #ffffff; font-weight: 700;">3. Contig Map &amp; AMR Loci Track</h3>
+              <p class="text-sm text-muted">Interactive coordinate map showing reference AMR determinants and point mutations across the sequence.</p>
+            </div>
+          </div>
+          <div id="analysis-genome-map-container" style="overflow-x: auto; padding: 10px 0;">
+            <!-- Rendered by AMRVisualizer.renderGenomeMap -->
+          </div>
+        </section>
+
+        <!-- 4. AMR Gene Detection Section -->
+        <section class="glass-card" id="amr-genes-section" style="margin-bottom: 28px;">
+          <div class="content-header">
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">4. AMR Gene Detection</h3>
+              <p class="text-sm text-muted">Annotated resistance genes identified against the reference AMR database.</p>
+            </div>
+            <div>
+              <span class="badge badge-warning">Demonstration Dataset &bull; Not for Clinical Diagnosis</span>
+            </div>
+          </div>
+
+          <!-- Filters Row -->
+          <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+            <div style="flex: 2; min-width: 200px;">
+              <input type="text" id="amr-gene-search" class="font-mono text-sm" style="width: 100%; padding: 8px 14px; background: #070d18; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: #ffffff;" placeholder="Search gene, antibiotic, or class...">
+            </div>
+            <div style="flex: 1; min-width: 150px;">
+              <select id="filter-amr-class" style="width: 100%; padding: 8px 12px; background: #070d18; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: #cbd5e1; font-size: 0.85rem;">
+                <option value="ALL">All Resistance Classes</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 150px;">
+              <select id="filter-amr-mech" style="width: 100%; padding: 8px 12px; background: #070d18; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: #cbd5e1; font-size: 0.85rem;">
+                <option value="ALL">All Mechanisms</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Gene Locus Preview Bar -->
+          <div id="gene-location-bar-container">
+            <!-- Rendered dynamically by AMRVisualizer.renderGeneLocationBar -->
+          </div>
+
+          <!-- AMR Table -->
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Gene</th>
+                  <th>Resistance Class</th>
+                  <th>Target Antibiotics</th>
+                  <th>Mechanism</th>
+                  <th>Start (bp)</th>
+                  <th>End (bp)</th>
+                  <th>Identity</th>
+                  <th>Coverage</th>
+                  <th>Confidence</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="amr-genes-table-body">
+                <!-- Dynamically populated by AMRAnalysis.filterAndRenderAMRTable -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 5. Mutation Analysis Section -->
+        <section class="glass-card" id="mutation-section" style="margin-bottom: 28px;">
+          <div class="content-header">
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">5. Mutation &amp; Single Nucleotide Variant (SNV) Analysis</h3>
+              <p class="text-sm text-muted">Examine nucleotide substitutions, codon changes, amino-acid effects, and evidence tiers.</p>
+            </div>
+            <div>
+              <span class="badge badge-info">11 Annotated Variants in Dataset</span>
+            </div>
+          </div>
+
+          <!-- Filters Row for Mutations -->
+          <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+            <div style="flex: 2; min-width: 200px;">
+              <input type="text" id="mutation-search-input" class="font-mono text-sm" style="width: 100%; padding: 8px 14px; background: #070d18; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: #ffffff;" placeholder="Search mutation ID, gene, or amino acid change...">
+            </div>
+            <div style="flex: 1; min-width: 140px;">
+              <select id="filter-mut-gene" style="width: 100%; padding: 8px 12px; background: #070d18; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: #cbd5e1; font-size: 0.85rem;">
+                <option value="ALL">All Genes</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 140px;">
+              <select id="filter-mut-type" style="width: 100%; padding: 8px 12px; background: #070d18; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: #cbd5e1; font-size: 0.85rem;">
+                <option value="ALL">All Types (Missense, Syn, etc.)</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 140px;">
+              <select id="filter-mut-assoc" style="width: 100%; padding: 8px 12px; background: #070d18; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: #cbd5e1; font-size: 0.85rem;">
+                <option value="ALL">All Associations</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Exact Mutation Position Visualizer -->
+          <div id="exact-mutation-track-container">
+            <!-- Dynamically rendered by AMRVisualizer.renderExactMutationPosition -->
+          </div>
+
+          <!-- Mutation Table -->
+          <div class="data-table-container" style="margin-bottom: 24px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Mutation ID</th>
+                  <th>Gene</th>
+                  <th>Position</th>
+                  <th>Ref</th>
+                  <th>Alt</th>
+                  <th>Codon</th>
+                  <th>Amino Acid</th>
+                  <th>Type</th>
+                  <th>Resistance Association</th>
+                </tr>
+              </thead>
+              <tbody id="mutation-table-body">
+                <!-- Dynamically populated by AMRMutation.filterAndRenderMutationTable -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Gene + Mutation Relationship Cascade -->
+          <div id="gene-mutation-cascade-container">
+            <!-- Rendered dynamically by AMRVisualizer.renderGeneMutationRelationship -->
+          </div>
+        </section>
+
+        <!-- 6. 3D Protein / Mutation Structural Visualizer -->
+        <section class="viewer-3d-card" id="visualization-section">
+          <div class="viewer-3d-header">
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">6. 3D Mutation / Protein Visualization</h3>
+              <p class="text-sm text-muted">Interactive tertiary macromolecular structure with mutation locus highlighted in catalytic cleft.</p>
+            </div>
+            <div class="viewer-3d-controls">
+              <select id="select-3d-style" style="padding: 5px 10px; background: #0f172a; border: 1px solid var(--border-subtle); border-radius: 6px; color: #cbd5e1; font-size: 0.8rem;">
+                <option value="cartoon">Cartoon Ribbon</option>
+                <option value="surface">Molecular Surface</option>
+                <option value="sphere">Space Filling (Spheres)</option>
+              </select>
+              <button class="btn btn-xs btn-secondary" id="btn-3d-rotate">Auto-Rotate</button>
+              <button class="btn btn-xs btn-secondary" id="btn-3d-zoomin">+</button>
+              <button class="btn btn-xs btn-secondary" id="btn-3d-zoomout">&minus;</button>
+              <button class="btn btn-xs btn-secondary" id="btn-3d-reset">Reset</button>
+            </div>
+          </div>
+
+          <!-- 3Dmol Viewer Viewport -->
+          <div class="viewer-3d-box" id="protein-3d-viewer">
+            <!-- 3Dmol viewer initialized by AMRVisualizer.init3DViewer -->
+          </div>
+
+          <div class="viewer-3d-disclaimer">
+            <span>🔴 Highlighted Residue: Mutation Site &bull; Reference PDB Model: Beta-Lactamase / PBP2a &bull; For academic structural demonstration</span>
+          </div>
+        </section>
+
+        <!-- Final Report Callout -->
+        <div class="glass-card" style="display: flex; align-items: center; justify-content: space-between; padding: 24px; background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(59,130,246,0.1));">
+          <div>
+            <h4 style="font-size: 1.15rem; color: #ffffff; font-weight: 700;">Ready to review the full synthesis?</h4>
+            <p class="text-sm text-muted">Generate a consolidated academic AMR report with findings, mechanisms, and printable summary.</p>
+          </div>
+          <a href="results.html" class="btn btn-primary">
+            <span>📑 View Full AMR Report &rarr;</span>
+          </a>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: Gene Detail View -->
+  <div class="modal-overlay" id="gene-detail-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="badge badge-cyan font-mono" id="modal-gene-class">Beta-lactam</span>
+          <h3 id="modal-gene-title" class="font-mono text-cyan" style="margin-top: 4px;">blaCTX-M-15</h3>
+        </div>
+        <button class="modal-close-btn" id="gene-modal-close">&times;</button>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <p id="modal-gene-desc" style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.6;"></p>
+      </div>
+
+      <!-- Locus Bar in Modal -->
+      <div id="modal-locus-bar-container"></div>
+
+      <!-- Metadata Grid -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px;">
+        <div class="kpi-card" style="padding: 12px;">
+          <span class="kpi-label">Target Antibiotics</span>
+          <span class="font-semibold text-white text-sm" id="modal-gene-drugs">--</span>
+        </div>
+        <div class="kpi-card" style="padding: 12px;">
+          <span class="kpi-label">Resistance Mechanism</span>
+          <span class="font-semibold text-cyan text-sm" id="modal-gene-mech">--</span>
+        </div>
+        <div class="kpi-card" style="padding: 12px;">
+          <span class="kpi-label">Genomic Coordinates</span>
+          <span class="font-mono text-white text-sm" id="modal-gene-coords">--</span>
+        </div>
+        <div class="kpi-card" style="padding: 12px;">
+          <span class="kpi-label">Strand &amp; Alignment Confidence</span>
+          <span class="font-mono text-emerald text-sm">
+            <span id="modal-gene-strand">--</span> &bull; <span id="modal-gene-identity">--</span> Identity (<span id="modal-gene-coverage">--</span> Cov)
+          </span>
+        </div>
+      </div>
+
+      <!-- Biochemical Mechanism Pathway -->
+      <div class="glass-card" style="padding: 16px; margin-bottom: 20px; background: rgba(30,41,59,0.5);">
+        <h5 style="color: #38bdf8; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; text-transform: uppercase;">Biochemical Mechanism &amp; Pathway</h5>
+        <p id="modal-gene-pathway" class="text-sm text-slate-300"></p>
+      </div>
+
+      <!-- Mutations in this gene -->
+      <div>
+        <h5 style="color: #ffffff; font-size: 0.9rem; font-weight: 700; margin-bottom: 10px;">Annotated Variants Inside This Locus</h5>
+        <div id="modal-gene-mutations-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Pipeline Progress Animation -->
+  <div class="modal-overlay" id="pipeline-progress-modal">
+    <div class="modal-card" style="max-width: 500px; text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 12px;">🧬</div>
+      <h3 style="font-size: 1.3rem; color: #ffffff; font-weight: 700;">Analyzing Genomic Contig</h3>
+      <p id="pipeline-progress-status" class="text-sm text-muted" style="margin-top: 6px;">
+        Executing 8-step bioinformatics pipeline...
+      </p>
+
+      <div class="pipeline-progress-bar-container">
+        <div class="pipeline-progress-fill" id="pipeline-progress-fill"></div>
+      </div>
+      <p class="text-xs text-subtle font-mono">Bioinformatics • Resistome Identification • SNV Mapping</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/sampleData.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/visualization.js"></script>
+  <script src="js/analysis.js"></script>
+  <script src="js/mutation.js"></script>
+</body>
+</html>
